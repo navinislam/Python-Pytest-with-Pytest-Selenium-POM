@@ -35,7 +35,6 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.chrome.image }}:{{ .Values.chrome.tag }}"
           imagePullPolicy: {{ .Values.chrome.pullPolicy }}
-          privileged: true
           ports:
             {{- if .Values.hub.jmxPort }}
             - containerPort: {{ .Values.hub.jmxPort }}
