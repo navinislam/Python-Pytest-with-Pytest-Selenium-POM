@@ -1,0 +1,91 @@
+hostAliases: []
+hub:
+  basicAuth:
+    enabled: false
+    password: password
+    username: zalenium
+  browserStackEnabled: false
+  browserStackKey: blank
+  browserStackUser: blank
+  containerSecurityContext: {}
+  cpuLimit: 1000m
+  cpuRequest: 250m
+  debugEnabled: false
+  desiredContainers: 2
+  env: null
+  image: dosel/zalenium
+  keepOnlyFailedTests: false
+  lambdaAccessKey: blank
+  lambdaTestEnabled: false
+  lambdaUsername: blank
+  livenessTimeout: 1
+  maxDockerSeleniumContainers: 10
+  maxTestSessions: 1
+  memLimit: 2Gi
+  memRequest: 500Mi
+  newSessionsWaitTimeout: 600000
+  openshift:
+    deploymentConfig:
+      enabled: false
+      triggers:
+      - type: ConfigChange
+    route:
+      enabled: false
+      hostname: null
+      tls: null
+  podAnnotations: {}
+  podSecurityContext: {}
+  port: 4444
+  pullPolicy: IfNotPresent
+  readinessTimeout: 1
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500Mi
+  retentionPeriod: 3
+  sauceAccessKey: blank
+  sauceLabsEnabled: false
+  sauceUserName: blank
+  screenHeight: 900
+  screenWidth: 1440
+  seleniumImageName: elgalu/selenium
+  sendAnonymousUsageInfo: true
+  serviceAnnotations: {}
+  serviceSessionAffinity: None
+  serviceSourceRanges:
+  - 0.0.0.0/0
+  serviceType: NodePort
+  svcPort: 80
+  tag: latest
+  testingBotEnabled: false
+  testingBotKey: blank
+  testingBotSecret: blank
+  timeZone: UTC
+  videoRecordingEnabled: true
+ingress:
+  annotations: null
+  enabled: false
+  hostname: zalenium.foobar.com
+  tls: false
+nodeSelector:
+  enabled: false
+persistence:
+  data:
+    accessMode: ReadWriteOnce
+    enabled: false
+    name: null
+    size: 2Gi
+    useExisting: false
+  video:
+    accessMode: ReadWriteOnce
+    enabled: false
+    folder: ""
+    name: null
+    size: 10Gi
+    useExisting: false
+rbac:
+  clusterWideAccess: false
+  create: true
+serviceAccount:
+  create: true
+  name: null
