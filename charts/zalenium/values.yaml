@@ -71,9 +71,9 @@ nodeSelector:
   enabled: false
 persistence:
   data:
-    accessMode: ReadWriteOnce
-    enabled: false
-    name: null
+    accessMode: ReadWriteMany
+    enabled: true
+    name: zalenium-shared
     size: 2Gi
     useExisting: false
   video:
