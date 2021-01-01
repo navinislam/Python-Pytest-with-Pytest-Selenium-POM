@@ -35,4 +35,3 @@ pipeline {
        sh 'pytest   -n 4 --driver Remote  --port 31498  --capability browserName chrome -v --html=output/report.html'
      }
    }
-}
