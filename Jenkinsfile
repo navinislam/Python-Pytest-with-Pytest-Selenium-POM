@@ -25,13 +25,14 @@ pipeline {
         docker { image 'python:3.8-slim-buster' }
     }
 
-   def commit_id
-   stage('Preparation') {
-     checkout scm
+    stages{
 
+      stage('test') {
+        steps{
+        checkout scm
+        sh 'pip install -r requirements.txt'
+        sh 'pytest   -n 4 --driver Remote  --port 31498  --capability browserName chrome -v --html=output/report.html'
+        }
+      }
    }
-    stage('test') {
-       sh 'pip install -r requirements.txt'
-       sh 'pytest   -n 4 --driver Remote  --port 31498  --capability browserName chrome -v --html=output/report.html'
-     }
-   }
+}
