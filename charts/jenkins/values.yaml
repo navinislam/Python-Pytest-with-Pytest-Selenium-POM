@@ -92,7 +92,7 @@ controller:
   targetPort: 8080
   # For minikube, set this to NodePort, elsewhere use LoadBalancer
   # Use ClusterIP if your setup includes ingress controller
-  serviceType: NodePort
+  serviceType: ClusterIP
   # Jenkins controller service annotations
   serviceAnnotations: {}
   # Jenkins controller custom labels
@@ -183,7 +183,6 @@ controller:
     - workflow-aggregator:2.6
     - git:4.4.5
     - configuration-as-code:1.46
-    - docker-plugin:1.2.1
 
   # List of plugins to install in addition to those listed in controller.installPlugins
   additionalPlugins: []
@@ -632,6 +631,7 @@ additionalAgents: {}
 #    command: "/bin/sh -c"
 #    args: "cat"
 #    TTYEnabled: true
+
 
 persistence:
   enabled: true
