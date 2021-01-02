@@ -1,5 +1,5 @@
 selenium==3.4.0
 pytest
-pytest-selenium
+pytest-selenium==2.0.1
 pytest-variables
 pytest-xdist

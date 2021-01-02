@@ -92,7 +92,7 @@ controller:
   targetPort: 8080
   # For minikube, set this to NodePort, elsewhere use LoadBalancer
   # Use ClusterIP if your setup includes ingress controller
-  serviceType: ClusterIP
+  serviceType: NodePort
   # Jenkins controller service annotations
   serviceAnnotations: {}
   # Jenkins controller custom labels
@@ -105,7 +105,7 @@ controller:
   # Put labels on Jenkins controller pod
   podLabels: {}
   # Used to create Ingress record (should used with ServiceType: ClusterIP)
-  # nodePort: <to set explicitly, choose port between 30000-32767
+  nodePort: 32000
   # Enable Kubernetes Liveness and Readiness Probes
   # if Startup Probe is supported, enable it too
   # ~ 2 minutes to allow Jenkins to restart when upgrading plugins. Set ReadinessTimeout to be shorter than LivenessTimeout.
@@ -622,15 +622,16 @@ additionalAgents: {}
 #    # sideContainerName: jnlp
 #    image: jenkins/jnlp-agent-maven
 #    tag: latest
-#  python:
-#    podName: python
-#    customJenkinsLabels: python
-#    sideContainerName: python
-#    image: python
-#    tag: "3"
+#  docker:
+#    podName: docker-agent
+#    customJenkinsLabels: docker-agent
+#    sideContainerName: docker-agent
+#    image: adriagalin/jenkins-jnlp-slave
+#    tag: "1.4"
 #    command: "/bin/sh -c"
 #    args: "cat"
 #    TTYEnabled: true
+
 
 
 persistence:
