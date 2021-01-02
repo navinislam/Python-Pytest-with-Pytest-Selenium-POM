@@ -3,4 +3,4 @@ pytest
 pytest-selenium==2.0.1
 pytest-variables
 pytest-xdist
-pytest-html
+pytest-html==3.1.1

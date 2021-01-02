@@ -151,9 +151,9 @@ hub:
 
 chrome:
   ## Enable the creation of a node-chrome pod
-  enabled: false
-  nodeMaxInstances: 2
-  nodeMaxSession: 2
+  enabled: true
+  nodeMaxInstances:
+  nodeMaxSession:
 
   ## DaemonSet instead of Deployment
   runAsDaemonSet: false
@@ -174,7 +174,7 @@ chrome:
   pullPolicy: "IfNotPresent"
 
   ## The number of pods in the deployment. This is ignored if runAsDaemonSet is enabled.
-  replicas: 2
+  replicas: 4
 
   ## When true will add a liveness check to the pod
   enableLivenessProbe: false
@@ -366,7 +366,7 @@ chromeDebug:
 
 firefox:
   ## Enable the creation of a node-firefox pod
-  enabled: true
+  enabled: false
 
   ## DaemonSet instead of Deployment
   runAsDaemonSet: false
