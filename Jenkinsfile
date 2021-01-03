@@ -24,7 +24,7 @@ podTemplate(containers: [
             // insoide the gradle docker image now
             container('python') {
                     // run gradle build
-                    sh 'cd Python-Pytest-with-Pytest-Selenium; pip install -r requirements.txt'
+                    // sh 'cd Python-Pytest-with-Pytest-Selenium; pip install -r requirements.txt'
                     sh ' pytest -n 4 --driver Remote --capability browserName chrome -vv --selenium-host 192.168.64.5 --selenium-port 30044 --html=output/report.html --self-contained-html'
                     // a little more info on the output
                     // sh 'ls -al Python-Pytest-with-Pytest-Selenium/output'
