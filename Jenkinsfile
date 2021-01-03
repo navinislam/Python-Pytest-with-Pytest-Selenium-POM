@@ -1,44 +1,3 @@
-// node {
-
- 
-//    def commit_id
-//    stage('Preparation') {
-//      checkout scm
-
-//    }
-//    stage('test') {
-//      def myTestContainer = docker.image('python:3.8-slim-buster')
-//      myTestContainer.pull()
-//      myTestContainer.inside {
-//        sh 'curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-17.04.0-ce.tgz \
-//   && tar xzvf docker-17.04.0-ce.tgz \
-//   && mv docker/docker /usr/local/bin \
-//   && rm -r docker docker-17.04.0-ce.tgz'
-//        sh 'pip install -r requirements.txt'
-//        sh 'pytest   -n 4 --driver Remote  --port 31498  --capability browserName chrome -v --html=output/report.html'
-//      }
-//    }
-// }
-
-// pipeline {
-//     agent {
-//         docker { image 'python:3.8-slim-buster' }
-//     }
-
-//     stages{
-
-//       stage('test') {
-//         steps{
-//         checkout scm
-//         sh 'pip install -r requirements.txt'
-//         sh 'pytest   -n 4 --driver Remote  --port 31498  --capability browserName chrome -v --html=output/report.html'
-//         }
-//       }
-//    }
-// }
-
-
-// define the docker containers we want here:
 podTemplate(containers: [
     containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'python', image: 'python:3.8-slim-buster', command: 'cat', ttyEnabled: true),
@@ -47,15 +6,17 @@ podTemplate(containers: [
 {
     // automatically label the pod - see https://plugins.jenkins.io/kubernetes/ for more info
     node(POD_LABEL) {
-
+        
         // clone a git repo that contains a gradle project
         stage('Clone git repository') {
+            
+            scm checkout
             // run the following commands in the git container
-            container('git') {
-                sh 'git clone -b master https://github.com/navinislam/Python-Pytest-with-Pytest-Selenium.git'
-                // show the cloned project files, just for info
-                sh 'find .'
-            }
+            // container('git') {
+            //     sh 'git clone -b master https://github.com/navinislam/Python-Pytest-with-Pytest-Selenium.git'
+            //     // show the cloned project files, just for info
+            //     sh 'find .'
+            // }
         }
 
         // run the example gradle build
@@ -64,13 +25,16 @@ podTemplate(containers: [
             container('python') {
                     // run gradle build
                     sh 'cd Python-Pytest-with-Pytest-Selenium; pip install -r requirements.txt'
-                    sh 'pytest -n 3 --driver Remote --capability browserName chrome '
+                    sh ' pytest -n 4 --driver Remote --capability browserName chrome -vv --selenium-host 192.168.64.5 --selenium-port 30044 --html=output/report.html --self-contained-html'
                     // a little more info on the output
-                    // sh 'ls -al springbootjenkinspipelinedemo/build/libs/'
+                    // sh 'ls -al Python-Pytest-with-Pytest-Selenium/output'
                     // finally, archive the built application
-                    // archiveArtifacts artifacts: 'springbootjenkinspipelinedemo/build/libs/**/*.jar', fingerprint: true
+                    // archiveArtifacts artifacts: 'output', fingerprint: true
+                    archiveArtifacts artifacts: 'output/**', followSymlinks: false,  allowEmptyArchive: true                   
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '../test1/output/', reportFiles: 'report.html', reportName: 'HTML Report', reportTitles: ''])        
+                
             }
-        }
 
+        }
     }
 }

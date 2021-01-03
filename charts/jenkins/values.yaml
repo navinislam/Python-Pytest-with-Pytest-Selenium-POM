@@ -167,8 +167,10 @@ controller:
   # loadBalancerIP: 1.2.3.4
   # Optionally configure a JMX port
   # requires additional javaOpts, ie
-  # javaOpts: >
-  #   -Dcom.sun.management.jmxremote.port=4000
+   javaOpts: >
+     -Djava.awt.headless=true
+
+#     -Dcom.sun.management.jmxremote.port=4000
   #   -Dcom.sun.management.jmxremote.authenticate=false
   #   -Dcom.sun.management.jmxremote.ssl=false
   # jmxPort: 4000
