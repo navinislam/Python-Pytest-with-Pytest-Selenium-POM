@@ -10,7 +10,7 @@ podTemplate(containers: [
         // clone a git repo that contains a gradle project
         stage('Clone git repository') {
             
-            // checkout scm
+            checkout scm
             // run the following commands in the git container
             // container('git') {
             //     sh 'git clone -b master https://github.com/navinislam/Python-Pytest-with-Pytest-Selenium.git'
