@@ -10,7 +10,7 @@ podTemplate(containers: [
         // clone a git repo that contains a gradle project
         stage('Clone git repository') {
             
-            checkout scm
+            // checkout scm
             // run the following commands in the git container
             // container('git') {
             //     sh 'git clone -b master https://github.com/navinislam/Python-Pytest-with-Pytest-Selenium.git'
@@ -26,7 +26,7 @@ podTemplate(containers: [
                     // run gradle build
                     sh 'ls'
                     sh 'pip install -r requirements.txt'
-                    sh ' pytest -n 4 --driver Remote --capability browserName chrome -vv --selenium-host 192.168.64.5 --selenium-port 30044 --html=output/report.html --self-contained-html'
+                    sh ' pytest -n 4 --driver Remote --capability browserName chrome -vv --selenium-host 192.168.64.6 --selenium-port 32497 --html=output/report.html --self-contained-html'
                     // a little more info on the output
                     // sh 'ls -al Python-Pytest-with-Pytest-Selenium/output'
                     // finally, archive the built application

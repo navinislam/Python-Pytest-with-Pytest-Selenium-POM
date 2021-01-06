@@ -38,7 +38,7 @@ hub:
   servicePort: 4444
 
   ## nodePort - The node port the service exposed on
-  nodePort: 30044
+  # nodePort: 30044
 
   ## Timeout for probe Hub readiness via HTTP request on hub.probePath
   readinessTimeout: 1
@@ -98,7 +98,7 @@ hub:
   ## The type of service to create
   ##   Values: ClusterIP, NodePort, LoadBalancer, or ExternalName
   ## ref: https://kubernetes.io/docs/user-guide/services/
-  serviceType: "NodePort"
+  serviceType: "LoadBalancer"
 
   ## The LoadBalancer IP Address
   ## ref: https://kubernetes.io/docs/user-guide/services/
@@ -174,7 +174,7 @@ chrome:
   pullPolicy: "IfNotPresent"
 
   ## The number of pods in the deployment. This is ignored if runAsDaemonSet is enabled.
-  replicas: 4
+  replicas: 2
 
   ## When true will add a liveness check to the pod
   enableLivenessProbe: false
