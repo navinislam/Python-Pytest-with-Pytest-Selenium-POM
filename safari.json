@@ -1,7 +1,0 @@
-{
-    "capabilities": {
-        "browserName": "Safari",
-	"platform": "macOS 10.13",
-	"version": "12.0"
-    }
-}

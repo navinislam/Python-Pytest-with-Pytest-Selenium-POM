@@ -1,19 +1,47 @@
-from datetime import datetime
+import os
+
 import pytest
-from py.xml import html
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+
+from pages.base_page import BaseFactory
+
 
 from pages.inventory_page import InventoryPage
 from pages.login_page import LoginPage
 
 
-@pytest.fixture
-def login():
-    return LoginPage()
+@pytest.fixture(scope="function")
+def driver():
+    service = Service()
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    driver = webdriver.Remote(
+        command_executor=os.getenv("HUB"),
+        options=chrome_options
+    )
+    # if you want to not run on selenium grid, uncomment this and comment out above driver
+    # driver = webdriver.Chrome(service=service, options=chrome_options)
+    yield driver
+    driver.quit()
+
+
+@pytest.fixture(scope="function")
+def base_factory(driver):
+    return BaseFactory(driver)
 
 
 @pytest.fixture
-def inventory():
-    return InventoryPage()
+def login(base_factory):
+    return LoginPage(base_factory)
+
+
+@pytest.fixture
+def inventory(base_factory):
+    return InventoryPage(base_factory)
 
 
 # Additional content for pytest results

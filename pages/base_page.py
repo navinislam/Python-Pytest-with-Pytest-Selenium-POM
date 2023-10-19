@@ -7,27 +7,22 @@ import time
 from typing import Any
 
 import structlog
-# from PageObjectLibrary import PageObject
+
 from selenium.webdriver import Keys
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
 class BaseFactory(object):
-    
-    def __init__(self ):
-        chrome_options = Options()
-        chrome_options.add_argument("--start-maximized")
-        driver = webdriver.Chrome(options=chrome_options)
+    def __init__(self, driver):
         self.driver = driver
 
     def open(self, path):
         self.driver.get(path)
 
     def get_date_time(self):
-        """ Static Method: get_date_time """
+        """Static Method: get_date_time"""
         timestamp = time.strftime("%m%d%Y%H%M%S")
         return timestamp
 
@@ -77,19 +72,30 @@ class BaseFactory(object):
         return structlog.get_logger(name)
 
     def wait_for_element_present(self, element, timeout=10):
+        """Waits for an element to be present in the DOM.
 
+        Args:
+            element (tuple): A tuple containing a pair of (By strategy, target).
+            timeout (int, optional): The timeout period. Defaults to 10.
+
+        Returns:
+            bool: True if the element is found, otherwise an exception is raised.
+        """
         try:
-            WebDriverWait(self.driver, timeout=timeout).until(EC.presence_of_element_located(element))
+            WebDriverWait(self.driver, timeout=timeout).until(
+                EC.presence_of_element_located(element)
+            )
             return True
         except Exception as error:
             screenshot = "element_not_found_" + self.get_date_time() + ".png"
             self.driver.save_screenshot(screenshot)
-            raise Exception("Element not found: " + str(element))
+            raise Exception(f"Element not found: {str(element)}")
 
     def wait_for_element_visible(self, element, timeout=10):
-
         try:
-            WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(element))
+            WebDriverWait(self.driver, timeout).until(
+                EC.visibility_of_element_located(element)
+            )
             return True
         except Exception as error:
             screenshot = "element_not_visible_" + self.get_date_time() + ".png"
@@ -120,7 +126,7 @@ class BaseFactory(object):
         Either provide element or a combination of locator and locatorType
         """
         is_displayed = False
-        logger = self.get_logger("get_pipeline_info")
+        logger = self.get_logger("element_is_displayed")
         try:
             if locator:  # This means if locator is not empty
                 element = self.driver.find_element(*locator)
@@ -131,16 +137,18 @@ class BaseFactory(object):
                 logger.info("Element not displayed", element=element)
             return is_displayed
         except:
-            print("Element not found")
+            logger.info("Element not displayed", element=locator)
             return False
 
     def wait_for_element_clickable(self, locator=None, timeout=10):
-        """ Waits for element to be clickable """
+        """Waits for element to be clickable"""
         logger = self.get_logger("wait for element clickable")
 
         try:
             logger.info("Waiting for element to be clickable", element=locator)
-            WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
+            WebDriverWait(self.driver, timeout).until(
+                EC.element_to_be_clickable(locator)
+            )
             logger.info("Element is clickable", element=locator)
             return True
         except Exception as error:
@@ -149,13 +157,15 @@ class BaseFactory(object):
             self.driver.save_screenshot(screenshot)
             raise Exception("Element not clickable: " + str(locator))
 
-    def wait_for_text_to_be_present(self, locator=None,  text=None, timeout=10 ):
-        """ Wait for element text to be changed"""
+    def wait_for_text_to_be_present(self, locator=None, text=None, timeout=10):
+        """Wait for element text to be changed"""
         logger = self.get_logger("wait for text to be present")
 
         try:
             logger.info("Waiting for text to be present", element=locator)
-            WebDriverWait(self.driver, timeout).until(EC.text_to_be_present_in_element(locator, text))
+            WebDriverWait(self.driver, timeout).until(
+                EC.text_to_be_present_in_element(locator, text)
+            )
             logger.info("Text is displayed", element=locator)
             return True
         except Exception as error:
@@ -165,7 +175,7 @@ class BaseFactory(object):
             raise Exception("Text is not present: " + str(locator))
 
     def click_element(self, locator, timeout=10):
-        """ Waits for element to be clickable and clicks element"""
+        """Waits for element to be clickable and clicks element"""
         logger = self.get_logger("click_element")
         self.wait_for_element_clickable(locator, timeout=timeout)
         logger.info("Clicking element", element=locator)
@@ -173,14 +183,17 @@ class BaseFactory(object):
         logger.info("Element clicked", element=locator)
 
     def click_element_and_hold(self, locator, timeout=10):
-        """ Waits for element to be clickable and clicks element"""
+        """Waits for element to be clickable and clicks element"""
         logger = self.get_logger("click_element")
         # self.wait_for_element_clickable(locator, timeout=timeout)
         logger.info("Clicking element", element=locator)
         self.driver.find_element(*locator).click()
         logger.info("Element clicked", element=locator)
-    def send_keys_to_element(self, locator, text, timeout=10, submit=False, sensitive=False):
-        """ Waits for element to be clickable and clicks element"""
+
+    def send_keys_to_element(
+        self, locator, text, timeout=10, submit=False, sensitive=False
+    ):
+        """Waits for element to be clickable and clicks element"""
         logger = self.get_logger("click_element")
         self.wait_for_element_present(element=locator, timeout=timeout)
         if not sensitive:
@@ -212,13 +225,13 @@ class BaseFactory(object):
         logger.info(f"Getting {width} as width for the element", element=locator)
         return width
 
-    def clear_element_text(self, locator,  timeout=10):
-        """ Waits for element to be present and clear"""
+    def clear_element_text(self, locator, timeout=10):
+        """Waits for element to be present and clear"""
         logger = self.get_logger("clear_text")
         self.wait_for_element_present(locator, timeout=timeout)
         self.driver.find_element(*locator).click()
         text = (self.driver.find_element(*locator)).get_attribute("value")
-        if text != '':
+        if text != "":
             i = 0
             while i <= len(text):
                 self.driver.find_element(*locator).send_keys(Keys.BACK_SPACE)
@@ -250,10 +263,10 @@ class BaseFactory(object):
         self.driver.quit()
 
     def generate_screenshot(self, error_file_name):
-        """ Method: generate_screenshot
+        """Method: generate_screenshot
         :type error_file_name: string
         :param error_file_name: this is the file name
-         """
+        """
         screenshot = f"screenshots/{error_file_name}_{self.get_date_time()}.png"
         self.driver.save_screenshot(screenshot)
         print("Generated screenshot: {}".format(screenshot))

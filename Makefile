@@ -1,14 +1,27 @@
-run_all_in_parallel:
-	make -j firefox_case chrome_case safari_case android_case
+SHELL:=/bin/bash
+GREEN  := $(shell tput -Txterm setaf 2)
 
-firefox_case:
-	pytest -n5 --driver SauceLabs --variables firefox.json
+.PHONY: test-local
+test-local: build-local
+	@echo '${GREEN} waiting for grid'
+	./wait-for-grid.sh;
+	@echo '${GREEN} running all tests'
+	pytest tests/ -s -v -n 3 --html=report.html --self-contained-html
 
-chrome_case:
-	pytest -n5 --driver SauceLabs --variables chrome.json
+.PHONY: install
+install:
+	pip install -r requirements.txt
 
-safari_case:
-	pytest -n5 --driver SauceLabs --variables safari.json
+.PHONY: build-local
+build-local:
+	docker-compose -f docker-compose.local.yml up -d
 
-android_case:
-	pytest -n5 --driver SauceLabs --variables android.json 
+.PHONY: test-docker
+test-docker:
+	docker-compose -f docker-compose.yml up --build
+
+.PHONY: teardown
+teardown:
+	docker-compose -f docker-compose.yml down
+	docker-compose -f docker-compose.local.yml down
+

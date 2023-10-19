@@ -1,13 +1,27 @@
+import os
+
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BaseFactory
 
 
 class LoginPage(BaseFactory):
+    def __init__(self, base_factory):
+        """
+        Initializes the SchedulePage object.
 
-    user_name = (By.ID, 'user-name')
-    password_locator = (By.ID, 'password')
-    btn = (By.ID, 'login-button')
+        Args:
+            base_factory (BaseFactory): The base factory object containing the web driver.
+
+        Returns:
+            None
+        """
+        super().__init__(base_factory.driver)
+
+    user_name = (By.ID, "user-name")
+    password_locator = (By.ID, "password")
+    btn = (By.ID, "login-button")
+    error_module = (By.CSS_SELECTOR, '.error-button')
 
     def login_as(self, username, password):
         self.send_keys_to_element(self.user_name, text=username)
@@ -18,13 +32,17 @@ class LoginPage(BaseFactory):
         return self.driver.title
 
     def get_current_url(self):
+        """
+        Retrieves the current URL from the web driver.
+
+        Returns:
+            str: The current URL.
+        """
         return self.driver.current_url
 
-    def get_header_text(self):
-        return self.driver.find_element_by_id('header_container').text
-
     def is_login_error_visible(self):
-        return self.driver.find_element_by_css_selector('.error-button').is_displayed()
+        self.wait_for_element_present(self.error_module)
+        return self.is_element_displayed(self.error_module)
 
     def visit(self):
-        self.driver.get('https://www.saucedemo.com')
+        self.driver.get(os.getenv("URI"))

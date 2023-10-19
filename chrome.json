@@ -1,8 +1,0 @@
-{
-    "capabilities": {
-        "browserName": "Chrome",
-	"platform": "Windows 7",
-	"version": "latest",
-	"extendedDebugging": true
-    }
-}
