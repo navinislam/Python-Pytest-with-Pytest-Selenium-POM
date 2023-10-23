@@ -21,7 +21,7 @@ class LoginPage(BaseFactory):
     user_name = (By.ID, "user-name")
     password_locator = (By.ID, "password")
     btn = (By.ID, "login-button")
-    error_module = (By.CSS_SELECTOR, '.error-button')
+    error_module = (By.CSS_SELECTOR, ".error-button")
 
     def login_as(self, username, password):
         self.send_keys_to_element(self.user_name, text=username)

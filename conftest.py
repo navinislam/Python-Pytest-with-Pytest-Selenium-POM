@@ -19,10 +19,7 @@ def driver():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    driver = webdriver.Remote(
-        command_executor=os.getenv("HUB"),
-        options=chrome_options
-    )
+    driver = webdriver.Remote(command_executor=os.getenv("HUB"), options=chrome_options)
     # if you want to not run on selenium grid, uncomment this and comment out above driver
     # driver = webdriver.Chrome(service=service, options=chrome_options)
     yield driver

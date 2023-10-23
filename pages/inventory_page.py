@@ -20,17 +20,15 @@ class InventoryPage(BaseFactory):
         super().__init__(base_factory.driver)
 
     add_backpack_to_cart_btn = (By.CSS_SELECTOR, "#add-to-cart-sauce-labs-backpack")
-    add_light_to_cart_btn = (By.CSS_SELECTOR, '#add-to-cart-sauce-labs-bike-light')
+    add_light_to_cart_btn = (By.CSS_SELECTOR, "#add-to-cart-sauce-labs-bike-light")
     remove_btn = (By.CSS_SELECTOR, ".btn_secondary")
     cart_items = (By.CSS_SELECTOR, ".shopping_cart_badge")
 
     def add_backpack_to_cart(self):
-        # self.driver.find_element(by=By.CSS_SELECTOR,value='#add-to-cart-sauce-labs-backpack').click()
         self.wait_for_element_present(self.add_backpack_to_cart_btn)
         self.click_element(self.add_backpack_to_cart_btn)
 
     def add_light_to_cart(self):
-        # self.driver.find_element(by=By.CSS_SELECTOR,value='#add-to-cart-sauce-labs-backpack').click()
         self.wait_for_element_present(self.add_light_to_cart_btn)
         self.click_element(self.add_light_to_cart_btn)
 
